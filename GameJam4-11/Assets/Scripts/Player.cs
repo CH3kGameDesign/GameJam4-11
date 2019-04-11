@@ -17,9 +17,9 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public PlayerInput m_controllerType; // keyboard or gamepad
-
-	// Use this for initialization
-	void Start ()
+    
+    // Use this for initialization
+    void Start ()
     {
 	}
 	

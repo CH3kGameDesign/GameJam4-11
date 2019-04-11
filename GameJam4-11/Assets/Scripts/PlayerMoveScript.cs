@@ -4,7 +4,6 @@ using UnityEngine;
 using XInputDotNetPure;
 
 
-
 public class PlayerMoveScript : MonoBehaviour {
 
     [Tooltip("Control the speed of the player on the x axis")]
@@ -26,7 +25,8 @@ public class PlayerMoveScript : MonoBehaviour {
     private float m_jumpForce = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         playerRef = GetComponent<Player>();
         
         m_characterController = GetComponent<CharacterController>();
@@ -60,6 +60,13 @@ public class PlayerMoveScript : MonoBehaviour {
         else
         {
             GamePadMovement(playerRef.m_gamePadState);
+
+            if (playerRef.m_gamePadState.Triggers.Left > 0 && m_characterController.isGrounded && !m_isJumping)
+            {
+                m_jumpForce = Jump_Velocity;
+                m_isJumping = true;
+            }
+            if (playerRef.m_gamePadState.Triggers.Left <= 0 && m_isJumping) m_isJumping = false;
         }
 
         
