@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using XInputDotNetPure;
 
-public enum PlayerInput
-{
-    KEYBOARD,
-    GAMEPAD
-}
 
 public class PlayerMoveScript : MonoBehaviour {
 
