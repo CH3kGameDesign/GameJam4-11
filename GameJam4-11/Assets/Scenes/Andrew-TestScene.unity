@@ -294,6 +294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerSpeed: 10
+  Jump_Velocity: 1
+  Jump_Drag: 1
 --- !u!143 &377990479
 CharacterController:
   m_ObjectHideFlags: 0

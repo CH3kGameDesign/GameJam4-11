@@ -11,6 +11,14 @@ public class PlayerMoveScript : MonoBehaviour {
     [Range(1, 20)]
     public float m_playerSpeed = 10;
 
+    [Tooltip("Scalar for innitial jump force")]
+    [Range(0.0f, 1.0f)]
+    public float Jump_Velocity = 1.0f;
+
+    [Tooltip("Scalar for rate of drop")]
+    [Range(0.0f, 1.0f)]
+    public float Jump_Drag = 1.0f;
+
     private Player playerRef;
     private CharacterController m_characterController;
     private float m_downwardForce = 0;
@@ -44,7 +52,7 @@ public class PlayerMoveScript : MonoBehaviour {
             }
             if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded)
             {
-                m_jumpForce = 1.0f;
+                m_jumpForce = Jump_Velocity;
             }
         }
         else
@@ -63,11 +71,11 @@ public class PlayerMoveScript : MonoBehaviour {
     {
         if(m_jumpForce >= 0.0f)
         {
-            m_jumpForce -= 5.0f * Time.deltaTime;
+            m_jumpForce -= Jump_Velocity * (5 * Jump_Drag) * Time.deltaTime;
         }
         else if(m_jumpForce < 0.0f && m_jumpForce > -0.75f)
         {
-            m_jumpForce -= 2.0f * Time.deltaTime;
+            m_jumpForce -= Jump_Velocity * (2 * Jump_Drag) * Time.deltaTime;
             
             if (m_characterController.isGrounded)
             {
