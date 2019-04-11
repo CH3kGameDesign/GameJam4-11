@@ -17,8 +17,17 @@ public class CameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        Invoke("GetPlayerObjects", 0.01f);
 	}
+
+    private void GetPlayerObjects ()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++)
+        {
+            CameraHooks.Add(players[i].transform);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
