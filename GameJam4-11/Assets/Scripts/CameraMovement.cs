@@ -9,9 +9,14 @@ public class CameraMovement : MonoBehaviour {
     [Header("Variables")]
     public float zoomMultiplier;
     public float zoomMin;
+    public float shakeAmount;
+    public float shakeLength;
     [Header("Speed")]
     public float camMovSpeed;
 
+    [HideInInspector]
+    public float shakeTimer = 10;
+    
     private Vector3 tarPos;
     private float tarZoom;
 
@@ -35,6 +40,15 @@ public class CameraMovement : MonoBehaviour {
         CamZoom();
 
         transform.position = Vector3.Lerp(transform.position, new Vector3(tarPos.x, tarPos.y, -tarZoom * zoomMultiplier), camMovSpeed * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.P))
+            shakeTimer = 0;
+
+        //CamShake
+        if (shakeTimer < shakeLength)
+            CamShake();
+        else
+            transform.GetChild(0).localPosition = Vector3.zero;
     }
 
     private void CamMov ()
@@ -65,5 +79,11 @@ public class CameraMovement : MonoBehaviour {
         }
         if (tarZoom < zoomMin)
             tarZoom = zoomMin;
+    }
+
+    private void CamShake ()
+    {
+        transform.GetChild(0).localPosition = Random.insideUnitSphere * shakeAmount;
+        shakeTimer += Time.deltaTime;
     }
 }

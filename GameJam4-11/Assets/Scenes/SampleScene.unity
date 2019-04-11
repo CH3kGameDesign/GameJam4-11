@@ -4227,7 +4227,10 @@ MonoBehaviour:
   - {fileID: 493579384}
   zoomMultiplier: 0.8
   zoomMin: 6
+  shakeAmount: 0.1
+  shakeLength: 0.15
   camMovSpeed: 2
+  shakeTimer: 0
 --- !u!4 &923146156
 Transform:
   m_ObjectHideFlags: 0
