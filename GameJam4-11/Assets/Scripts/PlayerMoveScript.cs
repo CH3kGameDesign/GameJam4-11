@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XInputDotNetPure;
 
-public enum PlayerInput
-{
-    KEYBOARD,
-    GAMEPAD
-}
+
 
 public class PlayerMoveScript : MonoBehaviour {
 
@@ -15,20 +11,18 @@ public class PlayerMoveScript : MonoBehaviour {
     [Range(1, 20)]
     public float m_playerSpeed = 10;
 
-    [Tooltip("Identifier of which player is controlling this character, can be set to up to 4, however we'll probably only have 2 players")]
-    [Range(1, 4)]
-    public int m_playerID;
-
-    private PlayerInput device;
+    private Player playerRef;
     private CharacterController m_characterController;
     private float m_downwardForce = 0;
     private bool m_isJumping = false;
-    private float m_jumpTimer = 0;
+    private float m_jumpForce = 0;
 
 	// Use this for initialization
 	void Start () {
-        device = PlayerInput.KEYBOARD;
+        playerRef = GetComponent<Player>();
+        
         m_characterController = GetComponent<CharacterController>();
+        
 	}
 	
 	// Update is called once per frame
@@ -36,10 +30,10 @@ public class PlayerMoveScript : MonoBehaviour {
 
         Vector3 totalForce = new Vector3(0, 0, 0);
 
-        if (device == PlayerInput.KEYBOARD)
+        if (playerRef.m_controllerType == PlayerInput.KEYBOARD)
         {
-            string hDirection = "Horizontal" + (m_playerID);
-            string jump = "Jump" + (m_playerID);
+            string hDirection = "Horizontal" + (playerRef.m_playerID);
+            string jump = "Jump" + (playerRef.m_playerID);
 
             if (Input.GetAxisRaw(hDirection) != 0)
             {
@@ -50,38 +44,38 @@ public class PlayerMoveScript : MonoBehaviour {
             }
             if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded)
             {
-                m_isJumping = true;
+                m_jumpForce = 10.0f;
             }
         }
         else
         {
-            GamePadMovement(GamePad.GetState((PlayerIndex)m_playerID));
+            GamePadMovement(playerRef.m_gamePadState);
         }
 
-
-        if (m_isJumping)
-        {
-            totalForce += Vector3.up * getJumpForce();
-            m_jumpTimer += Time.deltaTime;
-        }
-        //totalForce += direction * speed * Time.deltaTime;
+        
+        totalForce += Vector3.up * getJumpForce();
 
         ApplyForce(totalForce);
-        if(m_characterController.isGrounded)
-        {
-            m_isJumping = false;
-        }
     }
 
     // when the player presses the jump button, this function will be called to start the jump
     float getJumpForce()
     {
-        if(m_jumpTimer == 0.0f)
+        if(m_jumpForce >= 0.0f)
         {
-            //return 
+            m_jumpForce -= 5.0f * Time.deltaTime;
+        }
+        else if(m_jumpForce < 0.0f)
+        {
+            m_jumpForce -= 1.0f * Time.deltaTime;
+            if (m_characterController.isGrounded)
+            {
+                m_jumpForce = 0;
+            }
         }
         
-        return 0.0f;
+        
+        return m_jumpForce;
     }
 
     //this function is where all the force will be applied
