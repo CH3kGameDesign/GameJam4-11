@@ -23,15 +23,12 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
-    public GameObject playerPrefab;
+    public GameObject m_playerPrefab;
 
     // all players
     [HideInInspector]
     public List<GameObject> m_players;
-
-    // all gamepads
-    private List<GamePadState> m_gamePads;
-
+    
     // start positions
     public Transform[] m_playerStartPositions;
 
@@ -45,18 +42,18 @@ public class PlayerManager : MonoBehaviour
         m_players = new List<GameObject>();
 
         // get the state of any connected gamepads
-        m_gamePads = GetGamePads();
+        List<GamePadState> gamePads = GetGamePads();
 
         // if there are no gamepads connected, use keyboard
-        if (m_gamePads.Count == 0)
+        if (gamePads.Count == 0)
         {
-            m_players.Add(InstantiatePlayer(0)); // player 1
-            m_players.Add(InstantiatePlayer(1)); // player 2
+            m_players.Add(InstantiatePlayer(0, PlayerInput.KEYBOARD)); // player 1
+            m_players.Add(InstantiatePlayer(1, PlayerInput.KEYBOARD)); // player 2
         }
         else
         {
-            for (int i = 0; i < m_gamePads.Count; i++)
-                m_players.Add(InstantiatePlayer(i)); // create a player for each gamepad
+            for (int i = 0; i < gamePads.Count; i++)
+                m_players.Add(InstantiatePlayer(i, PlayerInput.GAMEPAD)); // create a player for each gamepad
         }
 	}
 
@@ -87,16 +84,20 @@ public class PlayerManager : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="playerID"></param>
-    /// <param name="playerInput"></param>
-    public GameObject InstantiatePlayer(int playerID)
+    /// <param name="controllerType"></param>
+    /// <returns></returns>
+    public GameObject InstantiatePlayer(int playerID, PlayerInput controllerType)
     {
         // determine spawn position
         Transform startTransform = m_playerStartPositions[playerID];
 
         // create player at spawn position
-        GameObject player = Instantiate(playerPrefab);
+        GameObject player = Instantiate(m_playerPrefab);
         player.transform.position = startTransform.position;
-        //player.GetComponent<Player>().m_playerID = playerID;
+
+        // set controller-relevant player variables
+        player.GetComponent<Player>().m_playerID = playerID;
+        player.GetComponent<Player>().m_controllerType = controllerType;
 
         return player;
     }
