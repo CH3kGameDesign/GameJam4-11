@@ -87,7 +87,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1241429165761380}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.6801724, y: -2.6381598, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4326838917220824}
@@ -214,11 +214,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f01ead6d6fe30c4a9cd2c99ab1ed013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_projectile: {fileID: 0}
+  m_projectile: {fileID: 1162045452887318, guid: 82512d51cec60414686c7fb4a478f90c,
+    type: 2}
   m_reticle: {fileID: 1794164061089186}
+  m_reticleChild: {fileID: 1125905612855940}
   m_reticleExtents: {x: -120, y: 120}
-  m_maxAmmo: 3
-  m_currentAmmo: 3
+  m_maxProjectiles: 3
+  m_currentProjectiles: 3
+  m_projectileSpeed: 1000
 --- !u!114 &114637270420670232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,7 +257,7 @@ SphereCollider:
   m_GameObject: {fileID: 1125905612855940}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
