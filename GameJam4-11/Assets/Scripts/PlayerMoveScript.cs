@@ -71,11 +71,27 @@ public class PlayerMoveScript : MonoBehaviour {
     // when the player presses the jump button, this function will be called to start the jump
     float getJumpForce()
     {
-        if(m_jumpForce >= 0.0f)
+        if(m_jumpForce > 0.0f)
         {
             m_jumpForce -= Jump_Velocity * (5 * Jump_Drag) * Time.deltaTime;
+
+            int layerMask = 1 << 8;
+
+            layerMask = ~layerMask;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, layerMask))
+            {
+                if (hit.distance < 0.6f)
+                    m_jumpForce = 0.0f;
+                Debug.Log("hit");
+            }
+            else
+            {
+                Debug.Log(hit.distance);
+            }
         }
-        else if(m_jumpForce < 0.0f && m_jumpForce > -0.75f)
+        else if(m_jumpForce <= 0.0f && m_jumpForce > -0.75f)
         {
             m_jumpForce -= Jump_Velocity * (2 * Jump_Drag) * Time.deltaTime;
             
