@@ -33,6 +33,7 @@ public class PlayerFireScript : MonoBehaviour
             case PlayerInput.KEYBOARD: // handle keyboard firing
 
                 //
+                KeyboardAim();
                 
                 break;
 
@@ -43,6 +44,17 @@ public class PlayerFireScript : MonoBehaviour
 
                 break;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void KeyboardAim()
+    {
+        float verticalAxis = Input.GetAxisRaw("Vertical" + (m_player.m_playerID + 1)) * 5;
+
+        if (verticalAxis != 0.0f)
+            m_reticle.transform.Rotate(new Vector3(0, 0, verticalAxis));
     }
 
     /// <summary>
