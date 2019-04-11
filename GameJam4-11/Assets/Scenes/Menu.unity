@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotMax: 15
-  scaleMax: 1.5
+  scaleMax: 1.4
   rotSpeed: 45
   scaleSpeed: 0.25
 --- !u!114 &2010654777
