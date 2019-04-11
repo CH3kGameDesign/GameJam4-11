@@ -50,10 +50,12 @@ public class PlayerMoveScript : MonoBehaviour {
                 // perform movement
                 totalForce += translation * Time.deltaTime;
             }
-            if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded)
+            if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded && !m_isJumping)
             {
                 m_jumpForce = Jump_Velocity;
+                m_isJumping = true;
             }
+            if (Input.GetAxisRaw(jump) <= 0 && m_isJumping) m_isJumping = false;
         }
         else
         {
