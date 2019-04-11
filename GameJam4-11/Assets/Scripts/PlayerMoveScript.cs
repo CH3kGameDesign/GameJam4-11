@@ -32,8 +32,8 @@ public class PlayerMoveScript : MonoBehaviour {
 
         if (playerRef.m_controllerType == PlayerInput.KEYBOARD)
         {
-            string hDirection = "Horizontal" + (playerRef.m_playerID);
-            string jump = "Jump" + (playerRef.m_playerID);
+            string hDirection = "Horizontal" + (playerRef.m_playerID + 1);
+            string jump = "Jump" + (playerRef.m_playerID + 1);
 
             if (Input.GetAxisRaw(hDirection) != 0)
             {
@@ -44,7 +44,7 @@ public class PlayerMoveScript : MonoBehaviour {
             }
             if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded)
             {
-                m_jumpForce = 10.0f;
+                m_jumpForce = 1.0f;
             }
         }
         else
@@ -65,13 +65,16 @@ public class PlayerMoveScript : MonoBehaviour {
         {
             m_jumpForce -= 5.0f * Time.deltaTime;
         }
-        else if(m_jumpForce < 0.0f)
+        else if(m_jumpForce < 0.0f && m_jumpForce > -0.75f)
         {
-            m_jumpForce -= 1.0f * Time.deltaTime;
+            m_jumpForce -= 2.0f * Time.deltaTime;
+            
             if (m_characterController.isGrounded)
             {
+                
                 m_jumpForce = 0;
             }
+            
         }
         
         
@@ -81,18 +84,6 @@ public class PlayerMoveScript : MonoBehaviour {
     //this function is where all the force will be applied
     void ApplyForce(Vector3 force)
     {
-
-        // the following is used to apply gravity, this may end up being replaced as gravity is boring and no one likes it
-        if(!m_characterController.isGrounded && m_downwardForce != 9.1f)
-        {
-            m_downwardForce += 5.0f * Time.deltaTime;
-            if(m_downwardForce > 9.1f) { m_downwardForce = 9.1f; }
-        }
-        else
-        {
-            m_downwardForce = 0;
-        }
-        force += Vector3.down * m_downwardForce;
 
         m_characterController.Move(force);
     }
