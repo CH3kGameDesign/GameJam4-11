@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XInputDotNetPure;
 
 public enum PlayerInput
 {
@@ -22,6 +23,7 @@ public class PlayerMoveScript : MonoBehaviour {
     private CharacterController m_characterController;
     private float m_downwardForce = 0;
     private bool m_isJumping = false;
+    private float m_jumpTimer = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -51,19 +53,34 @@ public class PlayerMoveScript : MonoBehaviour {
                 m_isJumping = true;
             }
         }
+        else
+        {
+            GamePadMovement(GamePad.GetState((PlayerIndex)m_playerID));
+        }
 
-        totalForce += Vector3.up * getJumpForce();
 
+        if (m_isJumping)
+        {
+            totalForce += Vector3.up * getJumpForce();
+            m_jumpTimer += Time.deltaTime;
+        }
         //totalForce += direction * speed * Time.deltaTime;
 
         ApplyForce(totalForce);
+        if(m_characterController.isGrounded)
+        {
+            m_isJumping = false;
+        }
     }
 
     // when the player presses the jump button, this function will be called to start the jump
     float getJumpForce()
     {
-
-
+        if(m_jumpTimer == 0.0f)
+        {
+            //return 
+        }
+        
         return 0.0f;
     }
 
@@ -84,5 +101,31 @@ public class PlayerMoveScript : MonoBehaviour {
         force += Vector3.down * m_downwardForce;
 
         m_characterController.Move(force);
+    }
+
+
+
+
+
+
+    /// <summary>
+    /// performs gamepad movement (directional pad)
+    /// </summary>
+    /// <param name="gamePad">the gamepad</param>
+    private void GamePadMovement(GamePadState gamePad)
+    {
+        // left movement
+        if (gamePad.DPad.Left == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.X < 0*/)
+            m_characterController.Move(Vector3.left * m_playerSpeed * Time.deltaTime);
+
+        // right movement
+        if (gamePad.DPad.Right == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.X > 0*/)
+            m_characterController.Move(Vector3.right * m_playerSpeed * Time.deltaTime);
+
+        // jumping
+        if (gamePad.DPad.Up == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.Y > 0*/)
+        {
+            // call jump function
+        }
     }
 }
