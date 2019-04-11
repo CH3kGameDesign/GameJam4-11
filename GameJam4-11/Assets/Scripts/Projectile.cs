@@ -21,13 +21,15 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                Destroy(player.gameObject);
+                PlayerManager.Instance.m_players.Remove(other.gameObject);
+                Destroy(other.gameObject);
             }
         }
         else
         {
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            transform.position = new Vector3(transform.position.x, transform.position.y + 0.1f, 0);
+            //transform.position = new Vector3(transform.position.x, transform.position.y + 0.1f, 0);
+            //transform.position -= transform.forward;
         }
     }
 

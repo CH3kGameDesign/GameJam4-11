@@ -246,8 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa4e581d08408304d987c2a7c346ca8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerSpeed: 10
-  Jump_Velocity: 1
+  m_playerSpeed: 6
+  Jump_Velocity: 0.8
   Jump_Drag: 1
 --- !u!135 &135718932185919776
 SphereCollider:

@@ -8339,7 +8339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraHooks:
-  - {fileID: 493579384}
+  - {fileID: 0}
   zoomMultiplier: 0.8
   zoomMin: 13
   shakeAmount: 0.1

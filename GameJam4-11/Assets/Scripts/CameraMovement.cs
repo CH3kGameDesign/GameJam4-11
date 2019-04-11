@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour {
 
     [Header ("Transforms")]
-    public List<Transform> CameraHooks = new List<Transform>();
+    public List<GameObject> CameraHooks = new List<GameObject>();
     [Header("Variables")]
     public float zoomMultiplier;
     public float zoomMin;
@@ -22,20 +22,25 @@ public class CameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Invoke("GetPlayerObjects", 0.01f);
+        //Invoke("GetPlayerObjects", 0.01f);
 	}
 
     private void GetPlayerObjects ()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        CameraHooks = PlayerManager.Instance.m_players;
+        /*
         for (int i = 0; i < players.Length; i++)
         {
             CameraHooks.Add(players[i].transform);
         }
+        */
     }
 	
 	// Update is called once per frame
 	void Update () {
+        GetPlayerObjects();
         CamMov();
         CamZoom();
 
@@ -49,6 +54,8 @@ public class CameraMovement : MonoBehaviour {
             CamShake();
         else
             transform.GetChild(0).localPosition = Vector3.zero;
+
+        
     }
 
     private void CamMov ()
@@ -57,7 +64,7 @@ public class CameraMovement : MonoBehaviour {
 
         for (int i = 0; i < CameraHooks.Count; i++)
         {
-            tarPos += CameraHooks[i].position;
+            tarPos += CameraHooks[i].transform.position;
         }
         tarPos /= CameraHooks.Count;
     }
@@ -71,7 +78,7 @@ public class CameraMovement : MonoBehaviour {
             {
                 if (j != i)
                 {
-                    float tempZoom = Vector3.Distance(CameraHooks[j].position, CameraHooks[i].position);
+                    float tempZoom = Vector3.Distance(CameraHooks[j].transform.position, CameraHooks[i].transform.position);
                     if (tempZoom > tarZoom)
                         tarZoom = tempZoom;
                 }

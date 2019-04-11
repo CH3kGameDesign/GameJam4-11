@@ -60,6 +60,13 @@ public class PlayerMoveScript : MonoBehaviour {
         else
         {
             GamePadMovement(playerRef.m_gamePadState);
+
+            if (playerRef.m_gamePadState.Triggers.Left > 0 && m_characterController.isGrounded && !m_isJumping)
+            {
+                m_jumpForce = Jump_Velocity;
+                m_isJumping = true;
+            }
+            if (playerRef.m_gamePadState.Triggers.Left <= 0 && m_isJumping) m_isJumping = false;
         }
 
         
