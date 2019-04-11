@@ -63,6 +63,7 @@
   <ItemGroup>
 <<<<<<< HEAD
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
+    <Compile Include="Assets\Scripts\MenuManager.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\TextMovement.cs" />
     <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
