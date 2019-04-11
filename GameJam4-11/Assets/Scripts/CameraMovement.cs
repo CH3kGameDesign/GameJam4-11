@@ -6,6 +6,9 @@ public class CameraMovement : MonoBehaviour {
 
     [Header ("Transforms")]
     public List<Transform> CameraHooks = new List<Transform>();
+    [Header("Variables")]
+    public float zoomMultiplier;
+    public float zoomMin;
     [Header("Speed")]
     public float camMovSpeed;
 
@@ -22,7 +25,7 @@ public class CameraMovement : MonoBehaviour {
         CamMov();
         CamZoom();
 
-        transform.position = Vector3.Lerp(transform.position, new Vector3(tarPos.x, tarPos.y, -tarZoom), camMovSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(tarPos.x, tarPos.y, -tarZoom * zoomMultiplier), camMovSpeed * Time.deltaTime);
     }
 
     private void CamMov ()
@@ -51,5 +54,7 @@ public class CameraMovement : MonoBehaviour {
                 }
             }
         }
+        if (tarZoom < zoomMin)
+            tarZoom = zoomMin;
     }
 }
