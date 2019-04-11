@@ -936,7 +936,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2121448613
+--- !u!1001 &2098241053
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -945,11 +945,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4341575998319020, guid: 79ba284ac833a8a47b9edfb0ed43b56d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.79
+      value: -8.499689
       objectReference: {fileID: 0}
     - target: {fileID: 4341575998319020, guid: 79ba284ac833a8a47b9edfb0ed43b56d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -3.497061
+      value: -3.5122356
       objectReference: {fileID: 0}
     - target: {fileID: 4341575998319020, guid: 79ba284ac833a8a47b9edfb0ed43b56d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -974,6 +974,11 @@ Prefab:
     - target: {fileID: 4341575998319020, guid: 79ba284ac833a8a47b9edfb0ed43b56d, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114742630844683520, guid: 79ba284ac833a8a47b9edfb0ed43b56d,
+        type: 2}
+      propertyPath: Jump_Velocity
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79ba284ac833a8a47b9edfb0ed43b56d, type: 2}
