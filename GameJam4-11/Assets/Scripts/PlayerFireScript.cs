@@ -121,13 +121,15 @@ public class PlayerFireScript : MonoBehaviour
             // instantiate projectile
             GameObject projectile = Instantiate(m_projectile);
             projectile.GetComponent<Projectile>().m_shooterID = m_player.m_playerID;
-            projectile.transform.eulerAngles = new Vector3(m_reticle.transform.localEulerAngles.z, 90, 0);
+            projectile.transform.eulerAngles = new Vector3(-m_reticle.transform.localEulerAngles.z - 90, 90, 0);
             projectile.transform.position = m_reticleChild.transform.position;
 
             Vector3 projectileForce = new Vector3(m_projectileSpeed * m_rightThumbStick.x, m_projectileSpeed * m_rightThumbStick.y, 0);
 
             Rigidbody projectileRigidBody = projectile.GetComponent<Rigidbody>();
             projectileRigidBody.AddForce(projectileForce);
+            //projectileRigidBody.AddTorque(new Vector3(0, 1, 0));
+            //projectileRigidBody.AddForceAtPosition(projectileForce, projectile.transform.position);
         }
         else if (gamePad.Triggers.Right == 0.0f)
         {
