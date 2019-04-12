@@ -415,8 +415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerSpeed: 6
-  Jump_Velocity: 0.6
-  Jump_Drag: 1
+  Jump_Velocity: 0.67
+  Jump_Drag: 0.5
 --- !u!135 &135718932185919776
 SphereCollider:
   m_ObjectHideFlags: 1

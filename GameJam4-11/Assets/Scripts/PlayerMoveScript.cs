@@ -79,7 +79,7 @@ public class PlayerMoveScript : MonoBehaviour {
     {
         if(m_jumpForce > 0.0f)
         {
-            m_jumpForce -= Jump_Velocity * (5 * Jump_Drag) * Time.deltaTime;
+            m_jumpForce -= /*Jump_Velocity * */ (5 * Jump_Drag) * Time.deltaTime;
 
             int layerMask = 1 << 8;
 
@@ -94,7 +94,7 @@ public class PlayerMoveScript : MonoBehaviour {
         }
         else if(m_jumpForce <= 0.0f && m_jumpForce > -0.75f)
         {
-            m_jumpForce -= Jump_Velocity * (2 * Jump_Drag) * Time.deltaTime;
+            m_jumpForce -= /*Jump_Velocity */ (2 * Jump_Drag) * Time.deltaTime;
             
             if (m_characterController.isGrounded)
             {
