@@ -214,14 +214,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f01ead6d6fe30c4a9cd2c99ab1ed013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_projectile: {fileID: 1162045452887318, guid: 82512d51cec60414686c7fb4a478f90c,
+  m_projectile: {fileID: 1206269498051334, guid: 82512d51cec60414686c7fb4a478f90c,
     type: 2}
   m_reticle: {fileID: 1794164061089186}
   m_reticleChild: {fileID: 1125905612855940}
   m_reticleExtents: {x: -120, y: 120}
-  m_maxProjectiles: 3
+  m_maxProjectiles: 5
   m_currentProjectiles: 3
-  m_projectileSpeed: 1000
+  m_projectileSpeed: 500
 --- !u!114 &114637270420670232
 MonoBehaviour:
   m_ObjectHideFlags: 1

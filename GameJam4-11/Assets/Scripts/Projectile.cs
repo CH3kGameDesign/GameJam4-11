@@ -5,54 +5,38 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [HideInInspector]
-    public int m_shooterID;
+    public int m_shooterID; // who shot this bullet
+    
+    private bool m_isLethal = true; // bullet isn't lethal when lodged in wall
+
+    public float m_spawnTime = 0.2f;
+    private float m_lifeTime = 0.0f;
 
     private void OnTriggerEnter(Collider other)
     {
+        m_lifeTime += Time.deltaTime;
+
         if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
             PlayerFireScript playerFireScript = other.GetComponent<PlayerFireScript>();
 
-            if (player.m_playerID == m_shooterID)
+            if (player.m_playerID == m_shooterID && !m_isLethal)
             {
+                // collision with the player who shot it
                 playerFireScript.m_currentProjectiles++;
-                Destroy(gameObject);
+                Destroy(gameObject); // destroy projectile
             }
-            else
+            else if (player.m_playerID != m_shooterID && m_isLethal)
             {
                 PlayerManager.Instance.m_players.Remove(other.gameObject);
                 Destroy(other.gameObject);
             }
         }
-        else
+        else if (!other.CompareTag("Projectile"))
         {
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            //transform.position = new Vector3(transform.position.x, transform.position.y + 0.1f, 0);
-            //transform.position -= transform.forward;
+            m_isLethal = false; // set bullet to non-lethal
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    //if (other.CompareTag("Player"))
-    //    //{
-    //    //    Player player = other.GetComponent<Player>();
-    //    //    PlayerFireScript playerFireScript = other.GetComponent<PlayerFireScript>();
-
-    //    //    if (player.m_playerID == m_shooterID)
-    //    //    {
-    //    //        playerFireScript.m_currentProjectiles++;
-    //    //        Destroy(this);
-    //    //    }
-    //    //    else
-    //    //    {
-    //    //        Destroy(player.gameObject);
-    //    //    }
-    //    //}
-    //    //else
-    //    //{
-    //    //    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-    //    //}
-    //}
 }
