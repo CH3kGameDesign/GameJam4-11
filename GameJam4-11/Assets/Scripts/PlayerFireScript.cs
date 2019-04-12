@@ -121,6 +121,7 @@ public class PlayerFireScript : MonoBehaviour
 
             // instantiate projectile
             GameObject projectile = Instantiate(m_projectile);
+            projectile.GetComponent<MeshRenderer>().material = PlayerManager.Instance.m_playerMaterials[m_player.m_playerID];
             projectile.GetComponent<Projectile>().m_shooterID = m_player.m_playerID;
             projectile.transform.eulerAngles = new Vector3(-m_reticle.transform.localEulerAngles.z - 90, 90, 0);
             projectile.transform.position = m_reticleChild.transform.position;

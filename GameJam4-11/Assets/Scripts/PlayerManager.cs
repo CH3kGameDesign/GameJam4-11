@@ -32,6 +32,8 @@ public class PlayerManager : MonoBehaviour
     // start positions
     public Transform[] m_playerStartPositions;
 
+    public Material[] m_playerMaterials;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -98,6 +100,8 @@ public class PlayerManager : MonoBehaviour
         // set controller-relevant player variables
         player.GetComponent<Player>().m_playerID = playerID;
         player.GetComponent<Player>().m_controllerType = controllerType;
+        player.GetComponentsInChildren<MeshRenderer>()[1].material = m_playerMaterials[playerID];
+        player.GetComponent<PlayerFireScript>().m_reticleChild.GetComponent<MeshRenderer>().material = m_playerMaterials[playerID];
 
         return player;
     }

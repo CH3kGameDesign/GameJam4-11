@@ -125,4 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_shooterID: 0
+  m_bloodParticle: {fileID: 198436765191673386, guid: 035d35672010d8b4ea449c852e3c9977,
+    type: 2}
   m_spawnTime: 0.2

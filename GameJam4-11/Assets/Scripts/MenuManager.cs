@@ -7,6 +7,9 @@ public class MenuManager : MonoBehaviour
 {
     public static bool paused = false;
 
+    public float m_roundEndDelay = 2.0f;
+    private float m_roundEndTimer = 0.0f;
+
     public GameObject PauseMenu;
     public GameObject[] buttons;
 
@@ -18,7 +21,12 @@ public class MenuManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (PlayerManager.Instance.m_players.Count == 1)
+        if (PlayerManager.Instance.m_players.Count <= 1)
+        {
+            m_roundEndTimer += Time.deltaTime;
+        }
+
+        if (m_roundEndTimer > m_roundEndDelay)
             ResetLevel();
 
 		if (Input.GetKeyDown(KeyCode.Escape))

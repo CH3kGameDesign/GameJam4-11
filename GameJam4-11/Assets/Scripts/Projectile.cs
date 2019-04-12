@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     
     private bool m_isLethal = true; // bullet isn't lethal when lodged in wall
 
+    public ParticleSystem m_bloodParticle;
+
     public float m_spawnTime = 0.2f;
     private float m_lifeTime = 0.0f;
     private void Update()
@@ -51,6 +53,8 @@ public class Projectile : MonoBehaviour
             else if (player.m_playerID != m_shooterID && m_isLethal)
             {
                 PlayerManager.Instance.m_players.Remove(other.gameObject);
+                ParticleSystem bloodParticle = Instantiate(m_bloodParticle);
+                bloodParticle.transform.position = other.transform.position;
                 Destroy(other.gameObject);
             }
         }

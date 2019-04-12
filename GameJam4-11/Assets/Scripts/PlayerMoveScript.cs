@@ -11,8 +11,8 @@ public class PlayerMoveScript : MonoBehaviour {
     public float m_playerSpeed = 10;
 
     [Tooltip("Scalar for rate of drop")]
-    [Range(0.0f, 1.0f)]
-    public float m_gravity = 1.0f;
+    [Range(0.0f, 100.0f)]
+    public float m_gravity = 10.0f;
 
     private Player playerRef;
     private CharacterController m_characterController;
@@ -84,7 +84,7 @@ public class PlayerMoveScript : MonoBehaviour {
         
         totalForce += Vector3.up * getJumpForce();
 
-        m_characterController.Move(totalForce);
+        m_characterController.Move(totalForce * Time.deltaTime);
     }
 
     // when the player presses the jump button, this function will be called to start the jump
@@ -116,9 +116,9 @@ public class PlayerMoveScript : MonoBehaviour {
         RaycastHit hit2;
         RaycastHit hit3;
 
-        Physics.Raycast(transform.position + (Vector3.right * -0.6f), Vector3.down * m_gravityDir, out hit1, Mathf.Infinity, layerMask);
+        Physics.Raycast(transform.position + (Vector3.right * -0.4f), Vector3.down * m_gravityDir, out hit1, Mathf.Infinity, layerMask);
         Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit2, Mathf.Infinity, layerMask);
-        Physics.Raycast(transform.position + (Vector3.right * 0.6f), Vector3.down * m_gravityDir, out hit3, Mathf.Infinity, layerMask);
+        Physics.Raycast(transform.position + (Vector3.right * 0.4f), Vector3.down * m_gravityDir, out hit3, Mathf.Infinity, layerMask);
 
         return (hit1.distance < 0.6f && !hit1.collider.CompareTag("Projectile"))
             || (hit2.distance < 0.6f && !hit2.collider.CompareTag("Projectile"))
