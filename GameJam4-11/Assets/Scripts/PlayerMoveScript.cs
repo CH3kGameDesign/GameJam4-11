@@ -10,13 +10,9 @@ public class PlayerMoveScript : MonoBehaviour {
     [Range(1, 20)]
     public float m_playerSpeed = 10;
 
-    [Tooltip("Scalar for innitial jump force")]
-    [Range(0.0f, 1.0f)]
-    public float Jump_Velocity = 1.0f;
-
     [Tooltip("Scalar for rate of drop")]
     [Range(0.0f, 1.0f)]
-    public float Jump_Drag = 1.0f;
+    public float m_gravity = 1.0f;
 
     private Player playerRef;
     private CharacterController m_characterController;
@@ -41,6 +37,8 @@ public class PlayerMoveScript : MonoBehaviour {
 
         Vector3 totalForce = new Vector3(0, 0, 0);
 
+        bool isGrounded = playerIsGrounded();
+
         if (playerRef.m_controllerType == PlayerInput.KEYBOARD)
         {
             string hDirection = "Horizontal" + (playerRef.m_playerID + 1);
@@ -53,48 +51,34 @@ public class PlayerMoveScript : MonoBehaviour {
                 // perform movement
                 totalForce += translation * Time.deltaTime;
             }
-
-            RaycastHit hit;
-
-            int layerMask = 1 << 8;
-            layerMask = ~layerMask;
-
-            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
+            
+            if (Input.GetAxisRaw(jump) > 0 && isGrounded && !m_isJumping)
             {
-                if (Input.GetAxisRaw(jump) > 0 && hit.distance <= 0.6f && !m_isJumping)
-                {
-                    m_gravityDir = -m_gravityDir;
+                m_gravityDir = -m_gravityDir;
 
 
-                    //m_jumpForce = Jump_Velocity;
-                    m_isJumping = true;
-                }
-                else if(Input.GetAxisRaw(jump) <= 0)
-                {
-                    m_isJumping = false;
-                }
+                //m_jumpForce = Jump_Velocity;
+                m_isJumping = true;
+            }
+            else if(Input.GetAxisRaw(jump) <= 0)
+            {
+                m_isJumping = false;
             }
         }
         else
         {
             GamePadMovement(playerRef.m_gamePadState);
 
-            RaycastHit hit;
-
-            int layerMask = 1 << 8;
-            layerMask = ~layerMask;
-            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
-            {
-                if (playerRef.m_gamePadState.Triggers.Left > 0 && hit.distance <= 0.6f && !m_isJumping)
-                {
-                    m_gravityDir = -m_gravityDir;
-                    m_isJumping = true;
-                }
-                else if(playerRef.m_gamePadState.Triggers.Left <= 0)
-                {
-                    m_isJumping = false;
-                }
-            }
+            
+           if (playerRef.m_gamePadState.Triggers.Left > 0 && isGrounded && !m_isJumping)
+           {
+               m_gravityDir = -m_gravityDir;
+               m_isJumping = true;
+           }
+           else if(playerRef.m_gamePadState.Triggers.Left <= 0)
+           {
+               m_isJumping = false;
+           }
         }
 
         
@@ -108,16 +92,11 @@ public class PlayerMoveScript : MonoBehaviour {
     {
         if(m_gravityAmount <= 0.0f)
         {
-            m_gravityAmount -=  2 * Jump_Drag * Time.deltaTime;
+            m_gravityAmount -=  2 * m_gravity * Time.deltaTime;
 
-            int layerMask = 1 << 8;
-
-            layerMask = ~layerMask;
-
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
-            {
-                if (hit.distance < 0.6f && !hit.collider.CompareTag("Projectile"))
+            
+            if (playerIsGrounded())
+            { 
                     m_gravityAmount = 0;
             }
 
@@ -126,6 +105,26 @@ public class PlayerMoveScript : MonoBehaviour {
         
         return m_gravityAmount * m_gravityDir;
     }
+
+    private bool playerIsGrounded()
+    {
+        int layerMask = 1 << 8;
+
+        layerMask = ~layerMask;
+
+        RaycastHit hit1;
+        RaycastHit hit2;
+        RaycastHit hit3;
+
+        Physics.Raycast(transform.position + (Vector3.right * -0.6f), Vector3.down * m_gravityDir, out hit1, Mathf.Infinity, layerMask);
+        Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit2, Mathf.Infinity, layerMask);
+        Physics.Raycast(transform.position + (Vector3.right * 0.6f), Vector3.down * m_gravityDir, out hit3, Mathf.Infinity, layerMask);
+
+        return (hit1.distance < 0.6f && !hit1.collider.CompareTag("Projectile"))
+            || (hit2.distance < 0.6f && !hit2.collider.CompareTag("Projectile"))
+            || (hit3.distance < 0.6f && !hit3.collider.CompareTag("Projectile"));
+    }
+
 
     /// <summary>
     /// performs gamepad movement (directional pad)
