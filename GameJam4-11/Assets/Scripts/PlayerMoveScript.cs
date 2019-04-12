@@ -88,7 +88,7 @@ public class PlayerMoveScript : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, layerMask))
             {
-                if (hit.distance < 0.6f)
+                if (hit.distance < 0.6f && !hit.collider.CompareTag("Projectile"))
                     m_jumpForce = 0.0f;
             }
         }
