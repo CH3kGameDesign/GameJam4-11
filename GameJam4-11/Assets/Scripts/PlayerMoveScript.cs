@@ -21,7 +21,11 @@ public class PlayerMoveScript : MonoBehaviour {
     private Player playerRef;
     private CharacterController m_characterController;
     private bool m_isJumping = false;
-    private float m_jumpForce = 0;
+    private float m_gravityAmount = 0;
+
+    [HideInInspector]
+    public float m_gravityDir = 1.0f;
+
 
 	// Use this for initialization
 	void Start ()
@@ -49,23 +53,48 @@ public class PlayerMoveScript : MonoBehaviour {
                 // perform movement
                 totalForce += translation * Time.deltaTime;
             }
-            if(Input.GetAxisRaw(jump) > 0 && m_characterController.isGrounded && !m_isJumping)
+
+            RaycastHit hit;
+
+            int layerMask = 1 << 8;
+            layerMask = ~layerMask;
+
+            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
             {
-                m_jumpForce = Jump_Velocity;
-                m_isJumping = true;
+                if (Input.GetAxisRaw(jump) > 0 && hit.distance <= 0.6f && !m_isJumping)
+                {
+                    m_gravityDir = -m_gravityDir;
+
+
+                    //m_jumpForce = Jump_Velocity;
+                    m_isJumping = true;
+                }
+                else if(Input.GetAxisRaw(jump) <= 0)
+                {
+                    m_isJumping = false;
+                }
             }
-            if (Input.GetAxisRaw(jump) <= 0 && m_isJumping) m_isJumping = false;
         }
         else
         {
             GamePadMovement(playerRef.m_gamePadState);
 
-            if (playerRef.m_gamePadState.Triggers.Left > 0 && m_characterController.isGrounded && !m_isJumping)
+            RaycastHit hit;
+
+            int layerMask = 1 << 8;
+            layerMask = ~layerMask;
+            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
             {
-                m_jumpForce = Jump_Velocity;
-                m_isJumping = true;
+                if (playerRef.m_gamePadState.Triggers.Left > 0 && hit.distance <= 0.6f && !m_isJumping)
+                {
+                    m_gravityDir = -m_gravityDir;
+                    m_isJumping = true;
+                }
+                else if(playerRef.m_gamePadState.Triggers.Left <= 0)
+                {
+                    m_isJumping = false;
+                }
             }
-            if (playerRef.m_gamePadState.Triggers.Left <= 0 && m_isJumping) m_isJumping = false;
         }
 
         
@@ -77,32 +106,25 @@ public class PlayerMoveScript : MonoBehaviour {
     // when the player presses the jump button, this function will be called to start the jump
     private float getJumpForce()
     {
-        if(m_jumpForce > 0.0f)
+        if(m_gravityAmount <= 0.0f)
         {
-            m_jumpForce -= /*Jump_Velocity * */ (5 * Jump_Drag) * Time.deltaTime;
+            m_gravityAmount -=  2 * Jump_Drag * Time.deltaTime;
 
             int layerMask = 1 << 8;
 
             layerMask = ~layerMask;
 
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit, Mathf.Infinity, layerMask))
             {
                 if (hit.distance < 0.6f && !hit.collider.CompareTag("Projectile"))
-                    m_jumpForce = 0.0f;
+                    m_gravityAmount = 0;
             }
-        }
-        else if(m_jumpForce <= 0.0f && m_jumpForce > -0.75f)
-        {
-            m_jumpForce -= /*Jump_Velocity */ (2 * Jump_Drag) * Time.deltaTime;
-            
-            if (m_characterController.isGrounded)
-            {
-                m_jumpForce = 0;
-            }
+
+           
         }
         
-        return m_jumpForce;
+        return m_gravityAmount * m_gravityDir;
     }
 
     /// <summary>
