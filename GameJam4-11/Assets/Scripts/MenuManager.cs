@@ -27,7 +27,14 @@ public class MenuManager : MonoBehaviour
         }
 
         if (m_roundEndTimer > m_roundEndDelay)
+        {
+            if (PlayerManager.Instance.m_players.Count != 0)
+            {
+                PlayerScore.playerScore[PlayerManager.Instance.m_players[0].GetComponent<Player>().m_playerID]++;
+            }
+
             ResetLevel();
+        }
 
 		if (Input.GetKeyDown(KeyCode.Escape))
         {
