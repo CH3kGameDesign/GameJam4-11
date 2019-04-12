@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour {
     public float camMovSpeed;
 
     [HideInInspector]
-    public float shakeTimer = 10;
+    public static float shakeTimer = 10;
     
     private Vector3 tarPos;
     private float tarZoom;
