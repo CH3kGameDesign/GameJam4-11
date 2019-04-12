@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour {
-
+public class MenuManager : MonoBehaviour
+{
     public static bool paused = false;
 
     public GameObject PauseMenu;
+    public GameObject[] buttons;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Awake ()
+    {
 	}
 	
 	// Update is called once per frame
@@ -31,17 +32,25 @@ public class MenuManager : MonoBehaviour {
             PlayState();
     }
 
-    private void PauseState ()
+    public void PauseState ()
     {
         PauseMenu.SetActive(true);
+
+        for (int i = 0; i < buttons.Length; i++)
+            buttons[i].SetActive(true);
+
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0;
         
     }
 
-    private void PlayState ()
+    public void PlayState ()
     {
         PauseMenu.SetActive(false);
+
+        for (int i = 0; i < buttons.Length; i++)
+            buttons[i].SetActive(false);
+
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
     }
@@ -51,5 +60,15 @@ public class MenuManager : MonoBehaviour {
         int thisSceneIndex = SceneManager.GetActiveScene().buildIndex;
         //PlayerPrefs.
         SceneManager.LoadScene(thisSceneIndex);
+    }
+
+    public void ResumeGame()
+    {
+        paused = false;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
