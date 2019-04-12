@@ -35,6 +35,9 @@ public class PlayerFireScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (MenuManager.paused)
+            return; // disallow firing/aiming when paused
+
         switch (m_player.m_controllerType)
         {
             case PlayerInput.KEYBOARD: // handle keyboard firing
@@ -94,8 +97,6 @@ public class PlayerFireScript : MonoBehaviour
 
         // 
         float rightStickAngle = Mathf.Atan2(yAngle, xAngle) * Mathf.Rad2Deg - 90;
-        //rightStickAngle = Mathf.Clamp(rightStickAngle, m_reticleExtents.x, m_reticleExtents.y);
-
         m_reticle.transform.eulerAngles = new Vector3(0, 0, rightStickAngle);
 
         m_rightThumbStick.x = xAngle;
@@ -128,8 +129,6 @@ public class PlayerFireScript : MonoBehaviour
 
             Rigidbody projectileRigidBody = projectile.GetComponent<Rigidbody>();
             projectileRigidBody.AddForce(projectileForce);
-            //projectileRigidBody.AddTorque(new Vector3(0, 1, 0));
-            //projectileRigidBody.AddForceAtPosition(projectileForce, projectile.transform.position);
         }
         else if (gamePad.Triggers.Right == 0.0f)
         {
