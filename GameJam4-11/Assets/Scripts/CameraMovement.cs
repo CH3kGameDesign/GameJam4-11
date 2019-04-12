@@ -41,9 +41,11 @@ public class CameraMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         GetPlayerObjects();
-        CamMov();
-        CamZoom();
-
+        if (CameraHooks.Count > 0)
+        {
+            CamMov();
+            CamZoom();
+        }
         transform.position = Vector3.Lerp(transform.position, new Vector3(tarPos.x, tarPos.y, -tarZoom * zoomMultiplier), camMovSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.P))

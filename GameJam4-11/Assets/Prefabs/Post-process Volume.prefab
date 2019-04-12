@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4094637710183664}
   - component: {fileID: 65187133273617160}
   - component: {fileID: 114221867889038992}
+  - component: {fileID: 114235778890318026}
   m_Layer: 8
   m_Name: Post-process Volume
   m_TagString: Untagged
@@ -69,3 +70,14 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!114 &114235778890318026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547500670160780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26730665fe7beda44b5978dc8bc9a985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
