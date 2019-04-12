@@ -20,7 +20,6 @@ public class PlayerMoveScript : MonoBehaviour {
 
     private Player playerRef;
     private CharacterController m_characterController;
-    private float m_downwardForce = 0;
     private bool m_isJumping = false;
     private float m_jumpForce = 0;
 
@@ -72,11 +71,11 @@ public class PlayerMoveScript : MonoBehaviour {
         
         totalForce += Vector3.up * getJumpForce();
 
-        ApplyForce(totalForce);
+        m_characterController.Move(totalForce);
     }
 
     // when the player presses the jump button, this function will be called to start the jump
-    float getJumpForce()
+    private float getJumpForce()
     {
         if(m_jumpForce > 0.0f)
         {
@@ -99,27 +98,12 @@ public class PlayerMoveScript : MonoBehaviour {
             
             if (m_characterController.isGrounded)
             {
-                
                 m_jumpForce = 0;
             }
-            
         }
-        
         
         return m_jumpForce;
     }
-
-    //this function is where all the force will be applied
-    void ApplyForce(Vector3 force)
-    {
-
-        m_characterController.Move(force);
-    }
-
-
-
-
-
 
     /// <summary>
     /// performs gamepad movement (directional pad)
