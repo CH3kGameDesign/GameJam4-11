@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 
@@ -14,13 +15,14 @@ public class MenuManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        if (PlayerManager.Instance.m_players.Count == 1)
+            ResetLevel();
+
 		if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (paused == false)
-                paused = true;
-            else
-                paused = false;
+            paused = !paused;
         }
 
         if (paused == true)
@@ -42,6 +44,12 @@ public class MenuManager : MonoBehaviour {
         PauseMenu.SetActive(false);
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
-        
+    }
+
+    private void ResetLevel()
+    {
+        int thisSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        //PlayerPrefs.
+        SceneManager.LoadScene(thisSceneIndex);
     }
 }
