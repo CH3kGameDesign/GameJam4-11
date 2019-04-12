@@ -91,11 +91,6 @@ public class PlayerMoveScript : MonoBehaviour {
             {
                 if (hit.distance < 0.6f)
                     m_jumpForce = 0.0f;
-                Debug.Log("hit");
-            }
-            else
-            {
-                Debug.Log(hit.distance);
             }
         }
         else if(m_jumpForce <= 0.0f && m_jumpForce > -0.75f)
