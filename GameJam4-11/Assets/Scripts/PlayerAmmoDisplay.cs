@@ -6,7 +6,7 @@ public class PlayerAmmoDisplay : MonoBehaviour
 {
     private PlayerFireScript m_playerFireScript; 
 
-    public SpriteRenderer[] m_ammoSprites;
+    public Renderer[] m_ammoSprites;
 
 	// Use this for initialization
 	void Start ()
