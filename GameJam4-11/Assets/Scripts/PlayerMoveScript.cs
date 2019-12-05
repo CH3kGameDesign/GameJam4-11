@@ -108,9 +108,8 @@ public class PlayerMoveScript : MonoBehaviour {
 
     private bool playerIsGrounded()
     {
-        int layerMask = 1 << 8;
-
-        layerMask = ~layerMask;
+        int layerMask = 1 << LayerMask.NameToLayer("Environment");
+        
 
         RaycastHit hit1;
         RaycastHit hit2;
@@ -119,10 +118,11 @@ public class PlayerMoveScript : MonoBehaviour {
         Physics.Raycast(transform.position + (Vector3.right * -0.4f), Vector3.down * m_gravityDir, out hit1, Mathf.Infinity, layerMask);
         Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit2, Mathf.Infinity, layerMask);
         Physics.Raycast(transform.position + (Vector3.right * 0.4f), Vector3.down * m_gravityDir, out hit3, Mathf.Infinity, layerMask);
-
-        return (hit1.distance < 0.6f && !hit1.collider.CompareTag("Projectile"))
-            || (hit2.distance < 0.6f && !hit2.collider.CompareTag("Projectile"))
-            || (hit3.distance < 0.6f && !hit3.collider.CompareTag("Projectile"));
+        
+        
+        return (hit1.distance < 0.6f)
+            || (hit2.distance < 0.6f)
+            || (hit3.distance < 0.6f);
     }
 
 
