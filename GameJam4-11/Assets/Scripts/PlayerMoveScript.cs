@@ -56,8 +56,7 @@ public class PlayerMoveScript : MonoBehaviour {
             {
                 m_gravityDir = -m_gravityDir;
 
-
-                //m_jumpForce = Jump_Velocity;
+                
                 m_isJumping = true;
             }
             else if(Input.GetAxisRaw(jump) <= 0)
@@ -109,20 +108,36 @@ public class PlayerMoveScript : MonoBehaviour {
     private bool playerIsGrounded()
     {
         int layerMask = 1 << LayerMask.NameToLayer("Environment");
-        
+        bool hit = false;
 
         RaycastHit hit1;
         RaycastHit hit2;
         RaycastHit hit3;
+        RaycastHit closest = new RaycastHit();
 
-        Physics.Raycast(transform.position + (Vector3.right * -0.4f), Vector3.down * m_gravityDir, out hit1, Mathf.Infinity, layerMask);
-        Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit2, Mathf.Infinity, layerMask);
-        Physics.Raycast(transform.position + (Vector3.right * 0.4f), Vector3.down * m_gravityDir, out hit3, Mathf.Infinity, layerMask);
-        
-        
-        return (hit1.distance < 0.6f)
-            || (hit2.distance < 0.6f)
-            || (hit3.distance < 0.6f);
+        if (Physics.Raycast(transform.position + (Vector3.right * -0.4f), Vector3.down * m_gravityDir, out hit1, 0.5f, layerMask))
+        {
+            if (!hit || hit1.distance < closest.distance)
+                closest = hit1;
+            hit = true;
+        }
+        if(Physics.Raycast(transform.position, Vector3.down * m_gravityDir, out hit2, 0.5f, layerMask))
+        {
+            if (!hit || hit2.distance < closest.distance)
+                closest = hit2;
+            hit = true;
+        }
+        if(Physics.Raycast(transform.position + (Vector3.right * 0.4f), Vector3.down * m_gravityDir, out hit3, 0.5f, layerMask))
+        {
+            if (!hit || hit3.distance < closest.distance)
+                closest = hit3;
+            hit = true;
+        }
+
+        Debug.Log(closest.distance);
+        //if (hit)
+        //    transform.position += Vector3.down * (0.5f - closest.distance) * m_gravityDir;
+        return hit;
     }
 
 
@@ -133,17 +148,12 @@ public class PlayerMoveScript : MonoBehaviour {
     private void GamePadMovement(GamePadState gamePad)
     {
         // left movement
-        if (gamePad.DPad.Left == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.X < 0*/)
-            m_characterController.Move(Vector3.left * m_playerSpeed * Time.deltaTime);
+        //if (gamePad.DPad.Left == ButtonState.Pressed || gamePad.ThumbSticks.Left.X < 0)
+        //    m_characterController.Move(Vector3.left * m_playerSpeed * Time.deltaTime);
 
         // right movement
-        if (gamePad.DPad.Right == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.X > 0*/)
-            m_characterController.Move(Vector3.right * m_playerSpeed * Time.deltaTime);
-
-        // jumping
-        if (gamePad.DPad.Up == ButtonState.Pressed/* || gamePad.ThumbSticks.Left.Y > 0*/)
-        {
-            // call jump function
-        }
+        //if (gamePad.DPad.Right == ButtonState.Pressed || gamePad.ThumbSticks.Left.X > 0)
+        //    m_characterController.Move(Vector3.right * m_playerSpeed * Time.deltaTime);
+        m_characterController.Move(Vector3.right * gamePad.ThumbSticks.Left.X * m_playerSpeed * Time.deltaTime);
     }
 }

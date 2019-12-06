@@ -126,7 +126,7 @@ public class PlayerFireScript : MonoBehaviour
             projectile.transform.eulerAngles = new Vector3(-m_reticle.transform.localEulerAngles.z - 90, 90, 0);
             projectile.transform.position = m_reticleChild.transform.position;
 
-            Vector3 projectileForce = new Vector3(m_projectileSpeed * m_rightThumbStick.x, m_projectileSpeed * m_rightThumbStick.y, 0);
+            Vector3 projectileForce = m_rightThumbStick.normalized * m_projectileSpeed;
 
             Rigidbody projectileRigidBody = projectile.GetComponent<Rigidbody>();
             projectileRigidBody.AddForce(projectileForce);
